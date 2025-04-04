@@ -3,8 +3,6 @@ const fs = require('fs');
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const certPath = path.resolve(__dirname, '../../certs/ca.pem');
-const caCert = fs.readFileSync(certPath).toString();
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -18,7 +16,7 @@ const sequelize = new Sequelize(
     dialectOptions: {
       ssl: {
         require: true,
-        ca: caCert
+        ca: process.env.CA_CERT
       }
     }
   }
