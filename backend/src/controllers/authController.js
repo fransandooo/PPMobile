@@ -8,39 +8,49 @@ const JWT_SECRET = process.env.JWT_SECRET || 'PepeComePipas'; // Secret key for 
 // Register a new user
 const registerUser = async (req, res) => {
     try {
-        const { name, surname, email, password } = req.body;
-
-        // Check if all fields are provided
-        if (!name || !surname || !email || !password) {
-            return res.status(400).json({ message: "All fields are required." });
-        }
-
-        // Check if user already exists
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ message: "Email is already registered." });
-        }
-
-        // Hash the password
-        const hashedPassword = await hashPassword(password);
-
-        // Create a new user
-        const newUser = await User.create({
-            name,
-            surname,
-            email,
-            password: hashedPassword
-        });
-
-        //await sendConfirmationEmail(email);
-
-
-        res.status(201).json({ message: "User registered successfully!", user: { id: newUser.id, email: newUser.email } });
+      const { name, surname, email, password } = req.body;
+  
+      // Check if all fields are provided
+      if (!name || !surname || !email || !password) {
+        return res.status(400).json({ message: "All fields are required." });
+      }
+  
+      // Check if user already exists
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(409).json({ message: "Email is already registered." });
+      }
+  
+      // Hash the password
+      const hashedPassword = await hashPassword(password);
+  
+      // Try to create the new user
+      const newUser = await User.create({
+        name,
+        surname,
+        email,
+        password: hashedPassword,
+      });
+  
+      // Optionally send confirmation email
+      // await sendConfirmationEmail(email);
+  
+      return res.status(201).json({
+        message: "User registered successfully!",
+        user: { id: newUser.id, email: newUser.email },
+      });
     } catch (error) {
-        console.error("❌ Error in user registration:", error);
-        res.status(500).json({ message: "Internal server error." });
+      console.error("❌ Error in user registration:", error);
+  
+      // Catch duplicate email (unique constraint)
+      if (error.name === "SequelizeUniqueConstraintError") {
+        return res.status(409).json({ message: "Email is already registered." });
+      }
+  
+      return res.status(500).json({ message: "Internal server error." });
     }
-};
+  };
+  
 
 
 const loginUser = async (req, res) => {
