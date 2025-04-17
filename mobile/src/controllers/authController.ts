@@ -1,5 +1,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { authFetch } from "../utils/authFetch";
 
 const API_BASE_URL = 'https://ppmobile.onrender.com/api/auth';
 
@@ -57,16 +59,11 @@ export async function registerUser(
 
   export async function fetchUserProfile() {
     try {
-      const token = await AsyncStorage.getItem("authToken");
-  
-      if (!token) throw new Error("No token found");
-  
-      const response = await fetch(`${API_BASE_URL}/profile`, {
+      const response = await authFetch(`${API_BASE_URL}/profile`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
+  
+      if (!response) return null;
   
       const data = await response.json();
   

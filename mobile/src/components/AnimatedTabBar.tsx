@@ -62,11 +62,17 @@ export default function AnimatedTabBar({
         };
 
         const iconName =
-          route.name === "dashboard"
-            ? "view-dashboard"
-            : route.name === "tasks"
-            ? "check-circle-outline"
-            : "account";
+        route.name === "dashboard"
+          ? "view-dashboard"
+          : route.name === "tasks"
+          ? "check-circle-outline"
+          : route.name === "create"
+          ? "plus-circle-outline"
+          : route.name === "plans-tab"
+          ? "clipboard-list-outline"
+          : "account";
+      
+      
 
         return (
           <TouchableOpacity

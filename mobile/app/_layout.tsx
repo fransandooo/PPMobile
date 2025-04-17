@@ -2,10 +2,12 @@
 import { Stack } from "expo-router";
 import "../global.css";
 import { SessionProvider } from "@/ctx";
+import { PaperProvider } from "react-native-paper";
 
 export default function RootLayout() {
   return (
     <SessionProvider>
+      <PaperProvider>
       <Stack
         screenOptions={{
           headerShown: false,
@@ -20,6 +22,7 @@ export default function RootLayout() {
           },
         }}
       />
+      </PaperProvider>
     </SessionProvider>
   );
 }

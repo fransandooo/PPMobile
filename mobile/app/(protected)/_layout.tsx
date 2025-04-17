@@ -1,4 +1,3 @@
-// app/(protected)/_layout.tsx
 import { Tabs, Redirect } from "expo-router";
 import { useSession } from "@/ctx";
 import { View, ActivityIndicator, Text } from "react-native";
@@ -21,19 +20,19 @@ export default function ProtectedTabsLayout() {
 
   return (
     <Tabs
-    tabBar={(props) => <AnimatedTabBar {...props} />} // 👈 use it here
-    screenOptions={{
-      headerShown: true,
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: "#f3efe4",
-      },
-      headerTintColor: "#1c2a48",
-      headerTitleStyle: {
-        fontWeight: "bold",
-        fontSize: 20,
-      },
-    }}
+      tabBar={(props) => <AnimatedTabBar {...props} />}
+      screenOptions={{
+        headerShown: true,
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: "#f3efe4",
+        },
+        headerTintColor: "#1c2a48",
+        headerTitleStyle: {
+          fontWeight: "bold",
+          fontSize: 20,
+        },
+      }}
     >
       <Tabs.Screen
         name="dashboard"
@@ -47,6 +46,20 @@ export default function ProtectedTabsLayout() {
         options={{
           title: "Tasks",
           tabBarIcon: () => <Text>✅</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: "Create",
+          tabBarIcon: () => <Text>＋</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="plans-tab"
+        options={{
+          title: "Plans",
+          tabBarIcon: () => <Text>📋</Text>,
         }}
       />
       <Tabs.Screen

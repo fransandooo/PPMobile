@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 type SessionContextType = {
   session: string | null;
@@ -26,6 +27,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const signIn = async (token: string) => {
     await AsyncStorage.setItem("authToken", token);
     setSession(token);
+    router.replace("/");
   };
 
   const signOut = async () => {
